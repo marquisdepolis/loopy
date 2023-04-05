@@ -94,8 +94,8 @@ def iterate_google(query):
     print(url)
     # make the API request
     response = requests.get(url)
-    print("Status code:", response.status_code)
-    print("Response content:", response.text)
+    # print("Status code:", response.status_code)
+    # print("Response content:", response.text)
     data = response.json()
     # get the result items
     search_items = data.get("items")
@@ -120,11 +120,11 @@ def iterate_google(query):
         link = search_item.get("link")
         links.append(link)
         # print the results
-        print("="*10, f"Result #{i+start-1}", "="*10)
-        print("Title:", title)
-        print("Description:", snippet)
-        print("Long description:", long_description)
-        print("URL:", link, "\n")
+        # print("="*10, f"Result #{i+start-1}", "="*10)
+        # print("Title:", title)
+        # print("Description:", snippet)
+        # print("Long description:", long_description)
+        # print("URL:", link, "\n")
     return links
 
 # %%
