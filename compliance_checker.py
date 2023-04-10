@@ -14,10 +14,10 @@ def open_file(filepath):
 
 # Load your OpenAI API key
 # os.chdir("/Users/rohit/Library/CloudStorage/OneDrive-Personal/SM_RK Shared folder/Coding_Analysis/company_chat")
-openai.api_key = open_file('openai_api_key.txt')
+openai.api_key = open_file('Keys/openai_api_key.txt')
 
 # Load your rules text
-rules_text = open_file('rules_textfile.txt')
+rules_text = open_file('Rules/rules_textfile.txt')
 
 # Function to call GPT-3.5-turbo API
 

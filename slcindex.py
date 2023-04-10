@@ -20,8 +20,8 @@ def open_file(filepath):
         return infile.read()
 
 
-os.environ["OPENAI_API_KEY"] = open_file('openai_api_key.txt')
-openai.api_key = open_file('openai_api_key.txt')
+os.environ["OPENAI_API_KEY"] = open_file('Keys/openai_api_key.txt')
+openai.api_key = open_file('Keys/openai_api_key.txt')
 openai_api_key = openai.api_key
 
 # %%
@@ -91,7 +91,7 @@ def gpt3_embedding(content, engine='text-embedding-ada-002'):
 #         info = {'content': chunk, 'vector': embedding}
 #         print(info, '\n\n\n')
 #         result.append(info)
-#     with open('tsla_index.json', 'w') as outfile:
+#     with open('Index/tsla_index.json', 'w') as outfile:
 #         json.dump(result, outfile, indent=2)
 
 
@@ -144,7 +144,7 @@ def gpt3_completion(prompt, engine='text-davinci-003', temp=0.6, top_p=1.0, toke
 
 
 def inputquery(query):
-    with open('slcindex.json', 'r') as infile:
+    with open('Index/slcindex.json', 'r') as infile:
         data = json.load(infile)
     data_list = list(data['docstore']['docs'].values())
     results = search_index(query, data_list)

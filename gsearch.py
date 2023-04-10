@@ -14,7 +14,7 @@ import callgpt
 
 
 def ask_gpt(your_question):
-    with open("openai_api_key.txt", "r") as f:
+    with open("Keys/openai_api_key.txt", "r") as f:
         openai.api_key = f.read().strip()
 
     query1 = []
@@ -71,9 +71,9 @@ def iterate_google(query):
     # os.chdir(directory)
 
     # API KEY from: https://developers.google.com/custom-search/v1/overview
-    API_KEY = open_file('google_api_key.txt')
+    API_KEY = open_file('Keys/google_api_key.txt')
     # get your Search Engine ID on your CSE control panel
-    SEARCH_ENGINE_ID = open_file('google_searchengine_id.txt')
+    SEARCH_ENGINE_ID = open_file('Keys/google_searchengine_id.txt')
     print(API_KEY)
     print(SEARCH_ENGINE_ID)
     try:
@@ -133,7 +133,7 @@ def iterate_google(query):
 def scrape_results(links):
     import openai
     from bs4 import BeautifulSoup
-    with open("openai_api_key.txt", "r") as f:
+    with open("Key/openai_api_key.txt", "r") as f:
         openai.api_key = f.read().strip()
 
     # Cycle through the urls to get the summarised answer
