@@ -36,8 +36,9 @@ def generate_text(prompt):
 
 
 def check_compliance(text):
-    prompt = f"Given the following rules:\n{rules_text}\n\nIs the following text compliant with the rules? Only if it is not, please rewrite the text to make it compliant.\n\nText: {text}\n"
-    generated_text = generate_text(prompt)
+    prompt = f"""Keeping in mind the following rules \n{rules_text}\n\n please rewrite the following text to not violate any rules.Keep as much of the original text as possible.\n\nText: {text}\n"""
+    generated_text = generate_text(
+        prompt)
 
     if "is compliant" in generated_text.lower():
         return text

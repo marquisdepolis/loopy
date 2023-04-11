@@ -68,7 +68,7 @@ slc_search:
 e.g. slc_search: Django
 Search what Rohit wrote on Strange Loop Canon for "Django"
 
-Always look things up on Wikipedia first, and only then expand to other sources.
+Always look things up on Google first, and only then expand to other sources.
 
 Example session:
 Question: What is the capital of France?
@@ -105,7 +105,7 @@ action_re = re.compile('^Action: (\w+): (.*)$')
 # I should do a Wikipedia search and a Google search separately, and combine them!
 
 
-def query(question, max_turns=1):
+def query(question, max_turns=2):
     i = 0
     bot = ChatBot(prompt)
     next_prompt = question
@@ -115,19 +115,21 @@ def query(question, max_turns=1):
         print(result)
         actions = [action_re.match(a) for a in result.split(
             '\n') if action_re.match(a)]
+
         if actions:
             # There is an action to run
             action, action_input = actions[0].groups()
             if action not in known_actions:
                 raise Exception(
                     "Unknown action: {}: {}".format(action, action_input))
+
             print(" -- running {} {}".format(action, action_input))
             observation = known_actions[action](action_input)
             print("Observation:", observation)
             next_prompt = "Observation: {}".format(observation)
             return observation
         else:
-            return
+            return result
 
 
 def wikipedia(q):
@@ -161,4 +163,4 @@ known_actions = {
 
 
 # ques = input("What do you want to know?")
-# query("Calculate the circumference of a pentagon where each side is 5cm long?")
+# query("How can you become the president of the united states??")

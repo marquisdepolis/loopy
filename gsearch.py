@@ -29,7 +29,7 @@ def ask_gpt(your_question):
         "presence_penalty": 0
     }
     query1 = openai.Completion.create(engine=model1, **params1)
-    print(query1.choices[0].text.strip())
+    # print(query1.choices[0].text.strip())
     google_it = f"Return exactly one Google search query, phrased as a question, I could Google to find information regarding {your_question}"
     model1 = "text-davinci-003"
     params1 = {
@@ -74,8 +74,8 @@ def iterate_google(query):
     API_KEY = open_file('Keys/google_api_key.txt')
     # get your Search Engine ID on your CSE control panel
     SEARCH_ENGINE_ID = open_file('Keys/google_searchengine_id.txt')
-    print(API_KEY)
-    print(SEARCH_ENGINE_ID)
+    # print(API_KEY)
+    # print(SEARCH_ENGINE_ID)
     try:
         page = int(sys.argv[2])
         # make sure page is positive
@@ -99,7 +99,7 @@ def iterate_google(query):
     data = response.json()
     # get the result items
     search_items = data.get("items")
-    print(search_items)
+    # print(search_items)
     if search_items is None:
         print("No search results found")
         exit()
@@ -133,7 +133,7 @@ def iterate_google(query):
 def scrape_results(links):
     import openai
     from bs4 import BeautifulSoup
-    with open("Key/openai_api_key.txt", "r") as f:
+    with open("Keys/openai_api_key.txt", "r") as f:
         openai.api_key = f.read().strip()
 
     # Cycle through the urls to get the summarised answer
@@ -143,7 +143,6 @@ def scrape_results(links):
     for x in range(num_results):
         # Get the page content
         html = requests.get(links[x]).text
-
         # Extract the page title and text
         soup = BeautifulSoup(html, "html.parser")
         title = soup.title.string
