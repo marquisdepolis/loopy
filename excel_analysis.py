@@ -1,5 +1,6 @@
 # %%
 import openpyxl
+from openpyxl import load_workbook
 from collections import defaultdict
 import re
 import os
@@ -23,8 +24,11 @@ callgpt = callgpt.Ask()
 MAX_ROW = 3
 
 
-def load_workbook(file_path):
-    return openpyxl.load_workbook(file_path, data_only=False)
+def load_workbook(file):
+    if isinstance(file, str):
+        return openpyxl.load_workbook(file, data_only=False)
+    else:
+        return file
 
 
 def analyze_sheet_hierarchy(wb):
@@ -160,9 +164,8 @@ def analyze_key_outputs(wb):
     return key_outputs
 
 
-def main(wb):
-    # file_path = '/Users/rohit/Downloads/Inventory_Analysis .xlsx'
-    # wb = load_workbook(file_path)
+def main(file_path):
+    wb = load_workbook(file_path)
     results = ""
     results += analyze_sheet_hierarchy(wb)
     results += analyze_named_ranges(wb)
@@ -173,7 +176,3 @@ def main(wb):
     results += analyze_key_outputs(wb)
     print(results)
     return results
-
-
-if __name__ == "__main__":
-    main(wb)
