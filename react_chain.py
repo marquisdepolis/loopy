@@ -100,12 +100,12 @@ Answer: The best pizza in London is Fatto o Mano in Kings Cross
 """.strip()
 
 
-action_re = re.compile('^Action: (\w+): (.*)$')
+action_re = re.compile('^Action: (\w+)(: (.*))?')
 
 # I should do a Wikipedia search and a Google search separately, and combine them!
 
 
-def query(question, max_turns=2):
+def query(question, max_turns=1):
     i = 0
     bot = ChatBot(prompt)
     next_prompt = question
@@ -155,8 +155,8 @@ def calculate(what):
 
 
 known_actions = {
-    "wikipedia": wikipedia,
-    "goog": goog,
+    "wiki_search": wikipedia,
+    "google_search": goog,
     "calculate": calculate,
     "slc_search": slc_search
 }
