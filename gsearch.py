@@ -210,4 +210,4 @@ def execute(query):
     return cleaned_text
 
 
-# execute("What's the best pizza place in London?")
+# execute("What's the best 10 day itinerary I can make for me and my family, including two children, to Iceland, if we love animals?")

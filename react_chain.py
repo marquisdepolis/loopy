@@ -105,7 +105,7 @@ action_re = re.compile('^Action: (\w+)(: (.*))?')
 # I should do a Wikipedia search and a Google search separately, and combine them!
 
 
-def query(question, max_turns=1):
+def query(question, max_turns=2):
     i = 0
     bot = ChatBot(prompt)
     next_prompt = question
@@ -127,8 +127,8 @@ def query(question, max_turns=1):
             observation = known_actions[action](action_input)
             print("Observation:", observation)
             next_prompt = "Observation: {}".format(observation)
-            return observation
         else:
+            # No more actions, return the result
             return result
 
 
