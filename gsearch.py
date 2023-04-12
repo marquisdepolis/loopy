@@ -91,7 +91,7 @@ def iterate_google(query):
     print(query)
     start = (page - 1) * 10 + 1
     url = f"https://www.googleapis.com/customsearch/v1?cx={SEARCH_ENGINE_ID}&key={API_KEY}&q={query}&start={start}"
-    print(url)
+    #    print(url)
     # make the API request
     response = requests.get(url)
     # print("Status code:", response.status_code)

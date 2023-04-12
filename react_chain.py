@@ -163,4 +163,4 @@ known_actions = {
 
 
 # ques = input("What do you want to know?")
-query("How can you become the president of the united states??")
+# query("How can you become the president of the united states??")
