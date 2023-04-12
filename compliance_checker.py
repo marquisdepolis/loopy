@@ -45,6 +45,6 @@ def check_compliance(text):
     return final_text
 
 
-ans = check_compliance(
-    "I will be highly competitive and ruthless in my pursuit for power and glory, even if I have to defeat my enemies and climb atop them.")
-print(ans)
+# ans = check_compliance(
+#     "I will be highly competitive and ruthless in my pursuit for power and glory, even if I have to defeat my enemies and climb atop them.")
+# print(ans)

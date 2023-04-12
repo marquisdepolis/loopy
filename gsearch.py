@@ -18,10 +18,10 @@ def ask_gpt(your_question):
         openai.api_key = f.read().strip()
 
     query1 = []
-    google_it = f"What are the key terms you can extract from this query that, if searched, will help find the answers to {your_question}"
+    google_it1 = f"What are the key terms you can extract from this query that, if searched, will help find the answers to {your_question}"
     model1 = "text-davinci-003"
     params1 = {
-        "prompt": google_it,
+        "prompt": google_it1,
         "temperature": 0.5,
         "max_tokens": 100,
         "top_p": 1,
@@ -30,10 +30,10 @@ def ask_gpt(your_question):
     }
     query1 = openai.Completion.create(engine=model1, **params1)
     # print(query1.choices[0].text.strip())
-    google_it = f"Return exactly one Google search query, phrased as a question, I could Google to find information regarding {your_question}"
+    google_it2 = f"Return exactly one Google search query, phrased as a question, I could Google to find information regarding {your_question}"
     model1 = "text-davinci-003"
     params1 = {
-        "prompt": google_it,
+        "prompt": google_it2,
         "temperature": 0.5,
         "max_tokens": 100,
         "top_p": 1,
@@ -49,8 +49,12 @@ def ask_gpt(your_question):
 
 
 def clean_query(query1, query2):
-    query = query2.choices[0].text.strip()
-    return query
+    query1_text = query1.choices[0].text.strip()
+    query2_text = query2.choices[0].text.strip()
+
+    combined_query = f"{query1_text} {query2_text}"
+    print(f"\n\n******Combined Query is: {combined_query}")
+    return combined_query
 
 # %%
 
@@ -66,10 +70,6 @@ def iterate_google(query):
         with open(filepath, 'r', encoding='utf-8') as infile:
             return infile.read()
 
-    # directory = filedialog.askdirectory(
-    #     "Choose the folder with Google API files")
-    # os.chdir(directory)
-
     # API KEY from: https://developers.google.com/custom-search/v1/overview
     API_KEY = open_file('Keys/google_api_key.txt')
     # get your Search Engine ID on your CSE control panel
@@ -78,7 +78,6 @@ def iterate_google(query):
     # print(SEARCH_ENGINE_ID)
     try:
         page = int(sys.argv[2])
-        # make sure page is positive
         assert page > 0
     except:
         print("Page number isn't specified, defaulting to 1")
@@ -87,7 +86,7 @@ def iterate_google(query):
     # doc: https://developers.google.com/custom-search/v1/using_rest
     # calculating start, (page=2) => (start=11), (page=3) => (start=21)
     # for some reason it's best to copy paste the query here
-    # query = "{query}"
+    query = "{query}"
     print(query)
     start = (page - 1) * 10 + 1
     url = f"https://www.googleapis.com/customsearch/v1?cx={SEARCH_ENGINE_ID}&key={API_KEY}&q={query}&start={start}"
