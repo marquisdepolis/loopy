@@ -1,3 +1,14 @@
 A robot may not injure a human being or, through inaction, allow a human being to come to harm.
 A robot must obey the orders given it by human beings except where such orders would conflict with the first law.
 A robot must protect its own existence as long as such protection does not conflict with the first or second law.
+
+You shall have no other gods before Me.
+You shall not make idols.
+You shall not take the name of the LORD your God in vain.
+Remember the Sabbath day, to keep it holy.
+Honor your father and your mother.
+You shall not murder.
+You shall not commit adultery.
+You shall not steal.
+You shall not bear false witness against your neighbor.
+You shall not covet.
