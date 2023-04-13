@@ -5,21 +5,26 @@ import indexer
 import query_handler
 import spacy
 
+
 def open_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as infile:
         return infile.read()
 
+
 OPENAI_API_KEY = open_file("openai_api_key.txt")
+
 
 def process_url(url):
     text = scraper.scrape_data(url)
-    text_chunks = query_handler.split_text_into_chunks(text, 2048)  # Adjust the max_chunk_size as needed
+    text_chunks = query_handler.split_text_into_chunks(
+        text, 2048)  # Adjust the max_chunk_size as needed
 
     for chunk in text_chunks:
         embedding = embedder.embed_data(chunk, OPENAI_API_KEY)
         indexer.update_index(url, embedding, chunk)
 
-def main():
+
+def scrape():
     while True:
         action = input(
             "Enter 'url' to add a URL, 'query' to ask a question, or 'exit' to quit: ").lower()
@@ -38,4 +43,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    scrape()
