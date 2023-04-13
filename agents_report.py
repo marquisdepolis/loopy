@@ -85,12 +85,12 @@ def make_willingness_to_sign_dict(completion_text: str):
 
 
 def create_joint_letter(goal: str):
-    drafter = Agent("Max Tegmark", "President of Future of Life Institute", goal, "slow down AGI research",
-                    "AGI safety is incredibly important lest it kill us all", "I am a philosopher.")
-    participants = [Agent("Tyler Cowen", "Economist", goal, "Accelerate AGI research", "We need more intelligence. Stasis is death. Safetyism leads to stagnation. Stagnation risks statis.", "I usually allude to historical events and figures, am pithy and Straussian in my communiques. I speak in brief sentences."),
-                    Agent("Scott Alexander", "AI researcher", goal, "slow down AGI research", "Responsible AGI is great, but the dangers are great, and we must be very very careful",
+    drafter = Agent("Max Tegmark", "President of Future of Life Institute", goal, "I want to be a brilliant philosopher",
+                    "I need to be specific in my thoughts and logical.", "I am a philosopher.")
+    participants = [Agent("Tyler Cowen", "Economist", goal, "I want to be a brilliant economist", "It is critical to have a holistic and humanistic view into topics to get to the truth.", "I usually allude to historical events and figures, am pithy and Straussian in my communiques. I speak in brief sentences."),
+                    Agent("Scott Alexander", "Writer", goal, "I want to get to the truth regardless of anything.", "The way to get to truth is by focusing on facts and rationalism",
                           "I am an empiricist. I am quite funny and draw interesting parallels between distinct fields. I am a rationalist."),
-                    Agent("Peter Thiel", "Investor", goal, "grow AI through companies", "AI will change the world and we should invest in it", "I speak in dichotomies often, in dialectic, I am a Girardian, and I like making grand theories.")]
+                    Agent("Peter Thiel", "Investor", goal, "I want to invest in world changing ideas.", "Girardian memetics rule most people's thoughts", "I speak in dichotomies often, in dialectic, I am a Girardian, and I like making grand theories.")]
 
     drafter.make_drafter(participants)
     for participant in participants:

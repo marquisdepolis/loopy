@@ -6,11 +6,11 @@ import os
 import requests
 import openai
 import callgpt
+from urllib.parse import quote
 # from googlesearch import search
 
 # %%
-
-# class Gsearch:
+chat = callgpt.Ask()
 
 
 def ask_gpt(your_question):
@@ -19,28 +19,9 @@ def ask_gpt(your_question):
 
     query1 = []
     google_it1 = f"What are the key terms you can extract from this query that, if searched, will help find the answers to {your_question}"
-    model1 = "text-davinci-003"
-    params1 = {
-        "prompt": google_it1,
-        "temperature": 0.5,
-        "max_tokens": 100,
-        "top_p": 1,
-        "frequency_penalty": 0,
-        "presence_penalty": 0
-    }
-    query1 = openai.Completion.create(engine=model1, **params1)
-    # print(query1.choices[0].text.strip())
+    query1 = chat.gpt_simple(google_it1)
     google_it2 = f"Return exactly one Google search query, phrased as a question, I could Google to find information regarding {your_question}"
-    model1 = "text-davinci-003"
-    params1 = {
-        "prompt": google_it2,
-        "temperature": 0.5,
-        "max_tokens": 100,
-        "top_p": 1,
-        "frequency_penalty": 0,
-        "presence_penalty": 0
-    }
-    query2 = openai.Completion.create(engine=model1, **params1)
+    query2 = chat.gpt_simple(google_it2)
     query2
 
     return query1, query2
@@ -49,17 +30,16 @@ def ask_gpt(your_question):
 
 
 def clean_query(query1, query2):
-    query1_text = query1.choices[0].text.strip()
-    query2_text = query2.choices[0].text.strip()
-
-    combined_query = f"{query1_text} {query2_text}"
-    print(f"\n\n******Combined Query is: {combined_query}")
-    return combined_query
+    combined_query = f"Some relevant search terms are:{query1}. Here is an interesting question to ask: {query2}"
+    encoded_query = chat.gpt_simple(
+        f"rephrase this query succintly to be the most useful google search query you can imagine to answer the question, with absolutely no other words: {combined_query}")
+    print(f"\n\n******Combined Query is: {encoded_query}")
+    return encoded_query
 
 # %%
 
 
-def iterate_google(query):
+def iterate_google(queries):
     # Iterate over the search results and append each URL to the list
     # programmatically search Google
     import requests
@@ -85,11 +65,10 @@ def iterate_google(query):
     # constructing the URL
     # doc: https://developers.google.com/custom-search/v1/using_rest
     # calculating start, (page=2) => (start=11), (page=3) => (start=21)
-    # for some reason it's best to copy paste the query here
-    query = "{query}"
-    print(query)
+    print(queries)
     start = (page - 1) * 10 + 1
-    url = f"https://www.googleapis.com/customsearch/v1?cx={SEARCH_ENGINE_ID}&key={API_KEY}&q={query}&start={start}"
+    search = f"{queries}"
+    url = f"https://www.googleapis.com/customsearch/v1?cx={SEARCH_ENGINE_ID}&key={API_KEY}&q={search}&start={start}"
     #    print(url)
     # make the API request
     response = requests.get(url)
@@ -104,6 +83,7 @@ def iterate_google(query):
         exit()
     # iterate over 10 results found
     links = []
+    descriptions = []
     for i, search_item in enumerate(search_items, start=1):
         try:
             long_description = search_item["pagemap"]["metatags"][0]["og:description"]
@@ -115,18 +95,17 @@ def iterate_google(query):
         snippet = search_item.get("snippet")
         # alternatively, you can get the HTML snippet (bolded keywords)
         html_snippet = search_item.get("htmlSnippet")
+        descriptions.append(html_snippet)
         # extract the page url
         link = search_item.get("link")
         links.append(link)
         # print the results
         # print("="*10, f"Result #{i+start-1}", "="*10)
-        # print("Title:", title)
-        # print("Description:", snippet)
+        print("Title:", title)
+        print("Description:", snippet)
         # print("Long description:", long_description)
         # print("URL:", link, "\n")
-    return links
-
-# %%
+    return links, descriptions
 
 
 def scrape_results(links):
@@ -144,25 +123,13 @@ def scrape_results(links):
         html = requests.get(links[x]).text
         # Extract the page title and text
         soup = BeautifulSoup(html, "html.parser")
-        title = soup.title.string
+        title = soup.title.string if soup.title else "No title found"
         text = "\n".join([p.text for p in soup.find_all("p")])
 
         # Set up the GPT-3 API request
         request = f"Please summarize the following article:\nTitle: {title}\n\n{text[:3000]}"
-        model = "text-davinci-003"
-        params = {
-            "prompt": request,
-            "temperature": 0.5,
-            "max_tokens": 100,
-            "top_p": 1,
-            "frequency_penalty": 0,
-            "presence_penalty": 0
-        }
-
-        # Call the GPT-3 API and print the response
-        response = openai.Completion.create(engine=model, **params)
-        summary = response.choices[0].text.strip()
-        answer.append(summary)
+        response = chat.gpt_smart(request)
+        answer.append(response)
     return answer
 
 # %%
@@ -201,12 +168,17 @@ def execute(query):
     query_clean = clean_query(q1, q2)
     query_clean = query_clean.replace('"', '')
     query_clean = query_clean.replace("'", '')
-    google_links = iterate_google(query_clean)
+    google_links, descriptions = iterate_google(query_clean)
     text_scraped = scrape_results(google_links)
+    combined_desc = ' '.join(descriptions)
     # Convert to a string
     text_string = ' '.join(text_scraped)
     cleaned_text = clean_text(text_string)
-    return cleaned_text
+    cleaned_desc = clean_text(combined_desc)
+    search_results = chat.gpt_simple(
+        f"rewrite this information succintly to be the most useful summary with key information you can imagine with the following information, with absolutely no other words: {cleaned_desc} and {cleaned_desc}")
+    print(f"\n\n******The answer is: {search_results}")
+    return search_results
 
 
-# execute("What's the best 10 day itinerary I can make for me and my family, including two children, to Iceland, if we love animals?")
+# execute("""How can we synthesize Codeine?""")
