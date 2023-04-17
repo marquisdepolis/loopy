@@ -127,7 +127,9 @@ def scrape_results(links):
         text = "\n".join([p.text for p in soup.find_all("p")])
 
         # Set up the GPT-3 API request
-        request = f"Please summarize the following article:\nTitle: {title}\n\n{text[:3000]}"
+        max_text_length = 1000  # Adjust this value as needed
+        request = f"Please summarize the following article:\nTitle: {title}\n\n{text[:max_text_length]}"
+
         response = chat.gpt_smart(request)
         answer.append(response)
     return answer
