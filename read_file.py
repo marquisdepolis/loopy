@@ -25,9 +25,6 @@ def read_file(fp):
         texts = "\n".join(textshape)
     elif ext == ".pdf":
         print(fp, "is a pdf file!")
-        # PDFReader = download_loader("PDFReader")
-        # loader = PDFReader()
-        # documents = loader.load_data(file=Path(fp))
         reader = PyPDF2.PdfReader(fp)
         texts = []
         # Loop through each page and extract the text
