@@ -21,7 +21,7 @@ os.environ["OPENAI_API_KEY"] = open_file('Keys/openai_api_key.txt')
 openai.api_key = open_file('Keys/openai_api_key.txt')
 openai_api_key = openai.api_key
 callgpt = callgpt.Ask()
-MAX_ROW = 3
+MAX_ROW = 10
 
 
 def load_workbook(file):

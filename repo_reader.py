@@ -133,18 +133,21 @@ def generate_textual_summary(analysis):
     return "\n".join(summary)
 
 
-def main():
-    # input("Do you want to read a repo, or analyse a directory? 1 or 2? ")
-    # repo_url = input("Input url") # Replace with the GitHub repository URL
-    # local_repo_path = clone_github_repo(repo_url)
-    directory = filedialog.askdirectory()
+def main(question):
+    userinput = input(
+        "Do you want to read a repo, or analyse a directory? 1 or 2? ")
+    if userinput == '1':
+        repo_url = input("Input url")
+        directory = clone_github_repo(repo_url)
+    else:
+        directory = filedialog.askdirectory()
     analysis = analyze_directory(directory)
     visualize_connections(analysis)
     summary = generate_textual_summary(analysis)
-    prompt = "You are an exceptional programmer, like Linus Torvalds. You can understand entire codebases and the interrelationships. Please generate a perfectly detailed summary of the code, its structure and possible uses given the following filenames and functions:\n" + \
+    prompt = "You are an exceptional programmer, like Linus Torvalds. You are trying to answer {question}. You can understand entire codebases and the interrelationships. Please generate a perfectly detailed summary of the code, its structure and possible uses given the following filenames and functions:\n" + \
         str(summary)+"\n\n:"
     chatbot = Ask()
-    response = chatbot.smart_prompt(prompt)
+    response = chatbot.gpt_smart(prompt)
     print(response)
 
     # Loop to handle follow-up questions
@@ -155,8 +158,7 @@ def main():
             break
 
         # Call GPT chatbot with the follow-up question
-        response = chatbot.smart_prompt(user_question)
-#        print(response)
+        response = chatbot.gpt_smart(user_question)
 
 
 if __name__ == "__main__":

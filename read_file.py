@@ -3,24 +3,28 @@ import pptx
 import os
 from llama_index import download_loader
 from pathlib import Path
+import PyPDF2
+from pptx import Presentation
 
 
 def read_file(fp):
     ext = os.path.splitext(fp)[-1].lower()
     if ext == ".pptx":
-        print fp, "is a pptx!"
-        PptxReader = download_loader("PptxReader")
-        loader = PptxReader()
-        document = loader.load_data(file=Path(fp))
-        # Load the PowerPoint presentation
-        ppt = pptx.Presentation(document)
-        # Loop through each slide and extract the text
-        for slide in ppt.slides:
+        print(fp, "is a pptx!")
+        presentation = Presentation(fp)
+        textshape = []
+        for slide in presentation.slides:
+            # Iterate through the shapes (text boxes, tables, images, etc.) in the slide
             for shape in slide.shapes:
-                if shape.has_text_frame:
-                    texts.append(shape.text)
+                # Check if the shape has a text frame
+                if hasattr(shape, "text"):
+                    # Append the text from the text frame to the texts list
+                    textshape.append(shape.text)
+
+        # Join the texts list into a single string, separated by line breaks
+        texts = "\n".join(textshape)
     elif ext == ".pdf":
-        print fp, "is a pdf file!"
+        print(fp, "is a pdf file!")
         # PDFReader = download_loader("PDFReader")
         # loader = PDFReader()
         # documents = loader.load_data(file=Path(fp))
@@ -33,7 +37,7 @@ def read_file(fp):
             text = page.extract_text()
             texts.append(text)
     elif ext == ".html":
-        print fp, "is an html file!"
+        print(fp, "is an html file!")
         with open(fp, 'r') as f:
             reader = BeautifulSoup(f, 'html.parser')
             texts = reader.get_text()
@@ -46,6 +50,6 @@ def read_file(fp):
             text = soup.get_text()
             texts.append(text)
     else:
-        print fp, "is an unknown file format."
+        print(fp, "is an unknown file format.")
 
     return texts
