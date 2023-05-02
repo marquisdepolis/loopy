@@ -14,16 +14,6 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 
-def open_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as infile:
-        return infile.read()
-
-
-# directory = filedialog.askdirectory()
-# os.chdir(directory)
-os.environ["OPENAI_API_KEY"] = open_file('openai_api_key.txt')
-openai.api_key = open_file('openai_api_key.txt')
-openai_api_key = openai.api_key
 # ignore all warnings
 warnings.filterwarnings("ignore")
 
